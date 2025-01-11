@@ -7,6 +7,7 @@ import errorHandler from './middleware/errorHandler.js'
 
 import authRouter from './routes/authRouter.js'
 import adminRouter from './routes/adminRouter.js'
+import providerRouter from './routes/providerRouter.js'
 dotenv.config();
 const app=express()
 //connect DB
@@ -19,6 +20,7 @@ app.use(cookieParser());
 //routing
 app.use("/api/users",authRouter)
 app.use("/api/admin",adminRouter)
+app.use("/api/provider",providerRouter)
 
 //error handler
 app.use(errorHandler)

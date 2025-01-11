@@ -1,6 +1,8 @@
 import profile from "../models/profile.js"
 import bcrypt from 'bcrypt'
 import CustomError from "../utils/customError.js"
+
+//registration services...
 export const RegistrationServices = async (data) => {
     if (!data.name || !data.email || !data.password || !data.id_proof) {
         throw new CustomError("All fields are required", 400);
@@ -10,10 +12,7 @@ export const RegistrationServices = async (data) => {
     if (userExist) {
         throw new CustomError("User already exists with this email address", 409);
     }
-
     const hashPassword = await bcrypt.hash(data.password, 10);
-
-    
     const newProfile = new profile({
         name: data.name,
         email: data.email,
@@ -24,6 +23,8 @@ export const RegistrationServices = async (data) => {
     await newProfile.save(); 
     return newProfile;
 };
+
+//login services....
 export const loginServices = async (email, password) => {
     const userData = await profile.findOne({ email });
     if (!userData) {

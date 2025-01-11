@@ -13,8 +13,8 @@ const profileModel = new mongoose.Schema({
     bio: { type: String, maxlength: 100 },
     address: { house_name: { type: String }, location: { type: String }, district: { type: String }, state: { type: String } },
     Educational_details: { college_name: { type: String }, location: { type: String }, passout_year: { type: Number } },
-    service: { photo: { type: [String] }, title: { type: String }, description: { type: String }, salary: { type: Number } }
-});
+    skills: { photo: { type: [String] }, title: { type: String }, description: { type: String }, salary: { type: Number } }
+},{ timestamps: true });
 
 const profile=mongoose.model("profile",profileModel)
 export default profile

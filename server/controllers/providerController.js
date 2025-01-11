@@ -1,5 +1,6 @@
-import asyncErrorResolver from "../utils/asyncErrorResolver";
-import { STATUS } from "../utils/constants";
+import asyncErrorResolver from "../utils/asyncErrorResolver.js";
+import { STATUS } from "../utils/constants.js";
+import { postJobServices } from "../services/providerServices.js";
 
 //post job
 export const postJob=asyncErrorResolver(async(req,res)=>{
