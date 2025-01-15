@@ -17,6 +17,12 @@ connectDB()
 app.use(express.json())
 app.use(cookieParser()); 
 
+app.use(cors({
+  origin: process.env.CLIENT_URL, 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  credentials: true 
+}));
+
 //routing
 app.use("/api/users",authRouter)
 app.use("/api/admin",adminRouter)
