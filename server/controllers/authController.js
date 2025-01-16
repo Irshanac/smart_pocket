@@ -12,14 +12,14 @@ import {
 export const register = asyncErrorResolver(async (req, res) => {
     const data = req.body;
     console.log(req.file, "files...");
-    // if (req.file && req.file.path) {
-    //     data.id_proof = req.file.path;
-    // } else {
-    //     return res.status(400).json({
-    //         success: STATUS.ERROR,
-    //         message: 'Image upload failed. Please include a valid image file.',
-    //     });
-    // }
+    if (req.file && req.file.path) {
+        data.id_proof = req.file.path;
+    } else {
+        return res.status(400).json({
+            success: STATUS.ERROR,
+            message: 'Image upload failed. Please include a valid image file.',
+        });
+    }
 
     const user = await RegistrationServices(data);
     res.status(200).json({
@@ -55,7 +55,7 @@ export const login =asyncErrorResolver(async(req,res)=>{
     res.status(200)
     .json({
       status: STATUS.SUCCESS,
-      message: "Admin Login successful" ,
+      message: " Login successful" ,
       user,
     });
 })

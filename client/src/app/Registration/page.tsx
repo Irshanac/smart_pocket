@@ -41,23 +41,46 @@ const Registration = () => {
   const handleSubmit = async (values: typeof initialValues): Promise<void> => {
     setIsLoading(true); 
     try {
-      const response = await axiosInstance.post(endPoint.AUTH.REGISTRATION, values);
-      setSuccessMessage(response.data.message);
-      setSuccessImage('/Images/login.jpeg'); // Replace with an actual URL
-      setIsLoading(false);
-      setIsSuccess(true);
-      // alert(response.data.message);
-      router.push('/')
-      
+      const formData = new FormData();
+  
+     
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+  
+      console.log(values.id_proof,"id proof")
+      if (values.id_proof) {
+        formData.append("id_proof", values.id_proof); 
+      }
+  
+  
+      const response = await axiosInstance.post(endPoint.AUTH.REGISTRATION, formData);
+  
+     
+      setSuccessMessage(response.data.message); 
+      setSuccessImage("/Images/login.jpeg"); 
+      setIsSuccess(true); 
+      setTimeout(() => {
+        setIsSuccess(false);
+        router.push('/'); 
+      }, 3000);
+  
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Something went wrong. Please try again.';
+      console.error("Error during registration:", error);
+  
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong. Please try again.";
       alert(errorMessage);
+  
+    } finally {
+      setIsLoading(false);
     }
   };
   
+  
   const handleCloseSuccessModal = () => {
     setIsSuccess(false);
-    router.push('/login'); // Navigate to login page after closing the modal
+    router.push('/'); 
   };
 
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -82,103 +105,110 @@ const Registration = () => {
           </h2>
 
           <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ setFieldValue, values, errors, touched }) => (
-              <Form className="space-y-4">
-                <InputField
-                  label="Name"
-                  name="name"
-                  type="text"
-                  placeholder="Enter your name"
-                />
-                <InputField
-                  label="Email"
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email"
-                />
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ setFieldValue, touched, errors }) => (
+        <Form className="space-y-4">
+          {/* Name Input */}
+          <InputField
+            label="Name"
+            name="name"
+            type="text"
+            placeholder="Enter your name"
+          />
 
-                <div className="mb-4">
-                  <label
-                    htmlFor="id_proof"
-                    className="block text-sm font-bold text-buttonBackground"
-                  >
-                    ID Proof
-                  </label>
-                  <input
-                    id="id_proof"
-                    name="id_proof"
-                    type="file"
-                    onChange={(e) => {
-                      if (e.currentTarget.files) {
-                        const selectedFile = e.currentTarget.files[0];
-                        setFieldValue("id_proof", selectedFile.name);
-                      }
-                    }}
-                    className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none sm:text-sm ${
-                      touched.id_proof && errors.id_proof
-                        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                        : "border-sky-900 focus:ring-indigo-700 focus:border-indigo-700"
-                    }`}
-                  />
-                  <ErrorMessage
-                    name="id_proof"
-                    component="div"
-                    className="text-red-500 text-sm mt-1"
-                  />
-                </div>
+          {/* Email Input */}
+          <InputField
+            label="Email"
+            name="email"
+            type="email"
+            placeholder="Enter your email"
+          />
 
-                <div className="mb-4">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-bold text-buttonBackground"
-                  >
-                    Password
-                  </label>
-                  <div className="relative">
-                    <Field
-                      id="password"
-                      name="password"
-                      type={passwordVisible ? "text" : "password"}
-                      placeholder="Enter your password"
-                      className={`mt-1 block w-full px-3 py-2 border ${
-                        touched.password && errors.password
-                          ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                          : "border-sky-900 focus:ring-indigo-700 focus:border-indigo-700"
-                      } rounded-md shadow-sm focus:outline-none sm:text-sm pr-10`}
-                    />
-                    <button
-                      type="button"
-                      className="absolute inset-y-0 right-2 flex items-center text-gray-500"
-                      onClick={() => setPasswordVisible(!passwordVisible)}
-                    >
-                      {passwordVisible ? (
-                        <IoMdEye className="h-5 w-5 text-black" />
-                      ) : (
-                        <FaEyeSlash className="h-5 w-5 text-black" />
-                      )}
-                    </button>
-                  </div>
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="text-red-500 text-sm mt-1"
-                  />
-                </div>
-                <div className="flex items-center justify-end mb-4">
-                  <Field type="checkbox" name="rememberMe" className="mr-2" />
-                  <label htmlFor="rememberMe" className="text-sm text-gray-700">
-                    Remember me
-                  </label>
-                </div>
+          {/* ID Proof Input */}
+          <div className="mb-4">
+            <label
+              htmlFor="id_proof"
+              className="block text-sm font-bold text-buttonBackground"
+            >
+              ID Proof
+            </label>
+            <input
+              id="id_proof"
+              name="id_proof"
+              type="file"
+              onChange={(e) => {
+                if (e.currentTarget.files) {
+                  setFieldValue("id_proof", e.currentTarget.files[0]);
+                }
+              }}
+              className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none sm:text-sm ${
+                touched.id_proof && errors.id_proof
+                  ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                  : "border-sky-900 focus:ring-indigo-700 focus:border-indigo-700"
+              }`}
+            />
+            <ErrorMessage
+              name="id_proof"
+              component="div"
+              className="text-red-500 text-sm mt-1"
+            />
+          </div>
 
-                <Button type="submit">Register</Button>
-              </Form>
-            )}
-          </Formik>
+          {/* Password Input */}
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-sm font-bold text-buttonBackground"
+            >
+              Password
+            </label>
+            <div className="relative">
+              <Field
+                id="password"
+                name="password"
+                type={passwordVisible ? "text" : "password"}
+                placeholder="Enter your password"
+                className={`mt-1 block w-full px-3 py-2 border ${
+                  touched.password && errors.password
+                    ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                    : "border-sky-900 focus:ring-indigo-700 focus:border-indigo-700"
+                } rounded-md shadow-sm focus:outline-none sm:text-sm pr-10`}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500"
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              >
+                {passwordVisible ? (
+                  <IoMdEye className="h-5 w-5 text-black" />
+                ) : (
+                  <FaEyeSlash className="h-5 w-5 text-black" />
+                )}
+              </button>
+            </div>
+            <ErrorMessage
+              name="password"
+              component="div"
+              className="text-red-500 text-sm mt-1"
+            />
+          </div>
+
+          {/* Remember Me Checkbox */}
+          <div className="flex items-center justify-end mb-4">
+            <Field type="checkbox" name="rememberMe" className="mr-2" />
+            <label htmlFor="rememberMe" className="text-sm text-gray-700">
+              Remember me
+            </label>
+          </div>
+
+          {/* Submit Button */}
+          <Button type="submit">Register</Button>
+        </Form>
+      )}
+    </Formik>
           <div className="flex justify-center items-center space-x-2">
       <p className="text-buttonBackground">Already have an account?</p>
       <Link href="/" className="text-blue-500 hover:underline">

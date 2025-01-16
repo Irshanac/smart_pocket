@@ -152,7 +152,7 @@ const Login = () => {
           </Formik>
           <div className="flex justify-center items-center space-x-2">
       <p className="text-buttonBackground">Not Registered Yet?</p>
-      <Link href="/" className="text-blue-500 hover:underline">
+      <Link href="/Registration" className="text-blue-500 hover:underline">
       Create an account
       </Link>
     </div>

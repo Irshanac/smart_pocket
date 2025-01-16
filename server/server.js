@@ -8,6 +8,7 @@ import errorHandler from './middleware/errorHandler.js'
 import authRouter from './routes/authRouter.js'
 import adminRouter from './routes/adminRouter.js'
 import providerRouter from './routes/providerRouter.js'
+import studentRouter from './routes/studentRouter.js'
 dotenv.config();
 const app=express()
 //connect DB
@@ -19,7 +20,7 @@ app.use(cookieParser());
 
 app.use(cors({
   origin: process.env.CLIENT_URL, 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'], 
   credentials: true 
 }));
 
@@ -27,6 +28,7 @@ app.use(cors({
 app.use("/api/users",authRouter)
 app.use("/api/admin",adminRouter)
 app.use("/api/provider",providerRouter)
+app.use("/api/student",studentRouter)
 
 //error handler
 app.use(errorHandler)
