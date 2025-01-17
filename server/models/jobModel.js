@@ -12,7 +12,7 @@ const jobSchema = new mongoose.Schema(
     salary: { type: Number, required: true },
     openings: { type: Number, required: true },
     provider_id: { type: mongoose.Types.ObjectId, ref: "profile", required: true },
-    status: { type: String, enum: ["Pending", "accept", "cancel"], required: true,default:"Pending" },
+    status: { type: String, enum: ["Pending", "Accepted","Rejected", "Cancelled"], required: true,default:"Pending" },
     isDeleted: { type: Boolean, required: true, default: false },
   },
   { timestamps: true } 

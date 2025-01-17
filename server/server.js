@@ -31,7 +31,7 @@ app.use("/api/provider",providerRouter)
 app.use("/api/student",studentRouter)
 
 //error handler
-app.use(errorHandler)
+// app.use(errorHandler)
 const PORT=process.env.PORT
 app.listen(PORT,()=>{
     console.log(`server running on the port ${PORT}`)

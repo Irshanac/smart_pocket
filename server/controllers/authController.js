@@ -11,7 +11,6 @@ import {
 //register the user
 export const register = asyncErrorResolver(async (req, res) => {
     const data = req.body;
-    console.log(req.file, "files...");
     if (req.file && req.file.path) {
         data.id_proof = req.file.path;
     } else {
