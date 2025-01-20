@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useAppDispatch } from "@/hook/useAppDispatch"; 
-import { setUserRole, setUserEmail,serUserName } from "../redux/slices/authSlice"; 
+import { setUserRole, setUserEmail,serUserName ,setAccessToken} from "../redux/slices/authSlice"; 
 import axiosInstance from "@/lib/axios";
 import endPoint from "@/lib/endPoint";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import { IoMdEye } from "react-icons/io";
 import { FaEyeSlash } from "react-icons/fa";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
-
+import Cookies from 'js-cookie';
 
 const Login = () => {
 
@@ -21,7 +21,7 @@ const Login = () => {
   const initialValues = { email: "", password: "" };
   const dispatch = useAppDispatch();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  
+  const token = Cookies.get('accessToken');
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email address")
@@ -38,6 +38,7 @@ const Login = () => {
       const response = await axiosInstance.post(endPoint.AUTH.LOGIN,values);
       console.log(response)
       const { role, email,name } = response.data.user;
+      dispatch(setAccessToken(token || null));
       dispatch(setUserRole(role));
       dispatch(setUserEmail(email));
       dispatch(serUserName(name));

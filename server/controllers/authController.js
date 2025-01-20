@@ -39,7 +39,7 @@ export const login =asyncErrorResolver(async(req,res)=>{
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: true,
-      maxAge: 5 * 60 * 1000, // 5 minutese
+      maxAge:  1 * 60* 60 * 1000, 
       path: '/',
       sameSite: 'none'
     });
@@ -47,7 +47,14 @@ export const login =asyncErrorResolver(async(req,res)=>{
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      path: '/',
+      sameSite: 'none'
+    });
+    res.cookie('role', user.role, {
+      httpOnly: true,
+      secure: true,
+      maxAge:  7*24 * 60* 60 * 1000, 
       path: '/',
       sameSite: 'none'
     });

@@ -222,6 +222,7 @@ const Registration = () => {
         onClose={handleCloseSuccessModal}
       />
     </div>
+
         </div>
       </div>
     </div>

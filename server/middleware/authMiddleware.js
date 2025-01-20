@@ -7,7 +7,8 @@ const authenticate = async (req, res, next) => {
   try {
     const token = req.cookies.accessToken;
     if (!token) {
-      throw new CustomError('Access token missing', 401);
+      // throw new CustomError('Access token missing', 401);
+      return res.status(401).json({ isAuthenticated: false, message: 'Not authenticated' });
     }
 
     const decoded = verifyToken(token, process.env.JWT_SECRET);

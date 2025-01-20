@@ -97,5 +97,6 @@ export const JobTypeAndCount=asyncErrorResolver(async(req,res)=>{
 //provider and count----------------------------------------------------------------------------------
 export const providerAndCount=asyncErrorResolver(async(req,res)=>{
   const providerCount=await providerCountServices()
+  
   res.status(200).json({status:STATUS.SUCCESS,message:"provider count",providerCount})
-})
+})  
